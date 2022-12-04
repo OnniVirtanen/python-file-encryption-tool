@@ -1,40 +1,50 @@
-import rsa
+from Crypto.Cipher import AES
 
-publicKey, privateKey = rsa.newkeys(512)
+key = b'Sixteen byte key'
 
-# User can choose (1) to encrypt or (2) to decrypt
-user_choise = str(input("Choose (1) to encrypt a string or (2) to decrypt string: \n"))
+# Encrypt
+def encrypt():
+    filename = input("Type a filename you want to encrypt: \n")
+    with open(filename, "rb") as tieto:
+        data = tieto.read()
+    cipher = AES.new(key, AES.MODE_EAX)
+    nonce = cipher.nonce
+    ciphertext, tag = cipher.encrypt_and_digest(data)
+    print("Encryption completed.")
 
-# Encrypts user input. Writes ciphertext and privatekey to files.
-if user_choise == "1":
-    message = input("Give a message to encrypt: ")
+    # Writing ciphertext, nonce and tag to a file.
+    with open('nonce.txt', "wb") as f:
+        f.write(nonce)
+    with open('enc' + filename, "wb") as f:
+        f.write(ciphertext)
+    with open('tag.txt', "wb") as f:
+        f.write(tag)
 
-    encMessage = rsa.encrypt(message.encode(), publicKey)
+# Decrypt
+def decrypt():
+    filename = input("Type a filename you want to decrypt: \n")
+    with open('nonce.txt', "rb") as f:
+        nonce_file = f.read()
+    with open(filename, "rb") as f:
+        ciphertext_file = f.read()
+    with open('tag.txt', "rb") as f:
+        tag_file = f.read()
+    print("nonce, cipher and tag files are read from the files.")
 
-    # Delete later these two prints
-    print(encMessage)
-    print(privateKey)
-
+    cipher = AES.new(key, AES.MODE_EAX, nonce=nonce_file)
+    plaintext = cipher.decrypt(ciphertext_file)
     try:
-        filename = 'privatekey_msg.txt'
-        file = open(filename, "w")
-        file.write(str(privateKey))
-        file.close()
-        print("Privatekey is successfully written in a file.")
-        encoded_message_filename = 'encoded_message.txt'
-        file_encoded_message = open(encoded_message_filename, "w")
-        file_encoded_message.write(str(encMessage))
-        file_encoded_message.close()
-        print("Encoded message is successufully written in a file.")
-    except:
-        print("Error occured while writing the file.")
+        cipher.verify(tag_file)
+        print("The message is authentic:", plaintext)
+    except ValueError:
+        print("Key incorrect or message corrupted")
 
-# Decrypts user input. A message and a privatekey is needed.
-elif user_choise == "2":
-    encMessageInput = input("Give a message to decrypt: \n")
-    privateKeyInput = input("GIve a private key that was given when the data was encrypted: \n ")
-    decMessage = rsa.decrypt(encMessageInput, privateKeyInput).decode()
-    print("decrypted string: ", decMessage)
-# User input wasn't correct in line 10.
+# User input
+user_choice_enc_or_dec = input("E to encrypt. D to decrypt.\n")
+
+if user_choice_enc_or_dec == "E":
+    encrypt()
+elif user_choice_enc_or_dec == "D":
+    decrypt()
 else:
-    print("Error. Try choosing 1 or 2.")
+    print("error")
