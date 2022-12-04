@@ -19,6 +19,14 @@ def encrypt():
     print("nonce:", nonce.hex())
     print("tag:", tag.hex() + "\n")
 
+    # Asking user if it is necessary to write a file containing key, nonce and tag in current directory.
+    save_important_values_to_file = input("Write these values to a file in your current directory? Y/N\n")
+    if save_important_values_to_file == "Y" or save_important_values_to_file == "y":
+        with open('important_values.txt', "w") as f:
+            f.write("key: " + key.hex() + "\n")
+            f.write("nonce: " + nonce.hex() + "\n")
+            f.write("tag: " + tag.hex() + "\n")
+
     # Writing ciphertext to file.
     with open('enc_' + filename, "wb") as f:
         f.write(ciphertext)
