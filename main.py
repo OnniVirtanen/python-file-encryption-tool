@@ -32,10 +32,12 @@ def decrypt():
     print("nonce, cipher and tag files are read from the files.")
 
     cipher = AES.new(key, AES.MODE_EAX, nonce=nonce_file)
-    plaintext = cipher.decrypt(ciphertext_file)
+    plaindata = cipher.decrypt(ciphertext_file)
     try:
         cipher.verify(tag_file)
-        print("The message is authentic:", plaintext)
+        print("The message is authentic.")
+        with open(filename + "decrypted", "wb") as f:
+            f.write(plaindata)
     except ValueError:
         print("Key incorrect or message corrupted")
 
