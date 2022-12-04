@@ -1,6 +1,7 @@
 import os
 from Crypto.Cipher import AES
 
+
 # Encrypt file
 def encrypt():
     key = os.urandom(16)
@@ -20,7 +21,8 @@ def encrypt():
     print("tag:", tag.hex() + "\n")
 
     # Asking user if it is necessary to write a file containing key, nonce and tag in current directory.
-    save_important_values_to_file = input("Write these values to a file in your current directory? Y/N\n")
+    save_important_values_to_file = input(
+        "Write these values to a file in your current directory? Y/N\n")
     if save_important_values_to_file == "Y" or save_important_values_to_file == "y":
         with open('important_values.txt', "w") as f:
             f.write("key: " + key.hex() + "\n")
@@ -32,10 +34,12 @@ def encrypt():
         f.write(ciphertext)
     print("The file was successfully encrypted.")
 
+
 # Decrypt file
 def decrypt():
     filename = input("Type a filename you want to decrypt: \n")
-    key_input = input("Type the key that was given when the file was encrypted: \n")
+    key_input = input(
+        "Type the key that was given when the file was encrypted: \n")
     key = bytes.fromhex(key_input)
     with open(filename, "rb") as f:
         ciphertext_file = f.read()
@@ -44,7 +48,8 @@ def decrypt():
 
     verify_authenticity = input("Verify file's authenticity Y/N")
     if verify_authenticity == "Y" or verify_authenticity == "y":
-        tag_input = input("Type the tag that was given when the file was encrypted: \n")
+        tag_input = input(
+            "Type the tag that was given when the file was encrypted: \n")
         tag_file = bytes.fromhex(tag_input)
 
     cipher = AES.new(key, AES.MODE_EAX, nonce=nonce)
@@ -61,6 +66,7 @@ def decrypt():
         print("The file was successfully decrypted.")
     except ValueError:
         print("Key incorrect or message corrupted")
+
 
 # User input
 print("Welcome to ViCrypt!")
