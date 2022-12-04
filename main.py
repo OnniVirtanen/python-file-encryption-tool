@@ -1,5 +1,8 @@
 import os
 from Crypto.Cipher import AES
+import colorama
+from colorama import Fore
+
 
 # Encrypt
 def encrypt():
@@ -50,11 +53,24 @@ def decrypt():
         print("Key incorrect or message corrupted")
 
 # User input
-user_choice_enc_or_dec = input("E to encrypt. D to decrypt.\n")
+print(Fore.BLUE + "------------------------------------------------------------")
+print("Welcome to", Fore.GREEN + "ViCrypt!\n")
+print(Fore.BLUE + "This program is used for file encryption and decryption.\n")
+print("The program uses AES 256 algorithm to encrypt files.")
+print("------------------------------------------------------------")
 
-if user_choice_enc_or_dec == "E":
-    encrypt()
-elif user_choice_enc_or_dec == "D":
-    decrypt()
+proceed = str(input(Fore.WHITE + "Proceed: Y/N "))
+
+if proceed == "Y" or proceed == "y":
+    user_choice_enc_or_dec = input("Type in E or D, E=Encrypt, D=Decrypt.\n")
+
+    if user_choice_enc_or_dec == "E":
+        encrypt()
+    elif user_choice_enc_or_dec == "D":
+        decrypt()
+    else:
+        print("error")
+elif proceed == "N" or proceed == "n":
+    print("Closing program.\nDone")
 else:
-    print("error")
+    print("Wrong input.\nClosing program.")
