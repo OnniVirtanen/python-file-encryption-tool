@@ -14,9 +14,12 @@ def encrypt():
     cipher = AES.new(key, AES.MODE_EAX)
     nonce = cipher.nonce
     ciphertext, tag = cipher.encrypt_and_digest(data)
-    print("The key and tag are needed for decryption. If lost, the data cannot be retrieved.")
-    print("Save this key: ", key.hex())
-    print("Save the tag to verify the file authenticity: ", tag.hex())
+    print("\n" + Fore.BLUE + "------------------------------------------------------------" + Fore.WHITE)
+    print("\nThe key is needed for decryption.", Fore.LIGHTRED_EX + "If lost, the data cannot be retrieved!" + Fore.WHITE)
+    print("The tag is needed to check the file authenticity.\n")
+    print("Save this key: ", Fore.BLUE + key.hex() + "\n")
+    print(Fore.WHITE + "Save this tag: ", Fore.CYAN + tag.hex() + Fore.WHITE + "\n")
+    print(Fore.BLUE + "------------------------------------------------------------" + Fore.WHITE + "\n") 
 
     # Writing ciphertext, nonce and tag to a file.
     with open('nonce.txt', "wb") as f:
@@ -25,7 +28,8 @@ def encrypt():
         f.write(ciphertext)
     with open('tag.txt', "wb") as f:
         f.write(tag)
-    print("The file was successfully encrypted.")
+    print(Fore.LIGHTGREEN_EX + "The file was successfully encrypted." + Fore.WHITE + "\n")
+    print("Closing program...\nDone.\n")
 
 # Decrypt
 def decrypt():
