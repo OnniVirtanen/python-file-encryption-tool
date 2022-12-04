@@ -1,9 +1,14 @@
+import os
 from Crypto.Cipher import AES
 
-key = b'Sixteen byte key'
+# key = b'16 bytes'
 
 # Encrypt
 def encrypt():
+    print("This key will be needed in decryption. If the key is lost the data is lost.")
+    key = os.urandom(16)
+    #key.hex problematic !!!!
+    print(key.hex())
     filename = input("Type a filename you want to encrypt: \n")
     with open(filename, "rb") as tieto:
         data = tieto.read()
@@ -23,6 +28,9 @@ def encrypt():
 # Decrypt
 def decrypt():
     filename = input("Type a filename you want to decrypt: \n")
+    key_input = input("Type the key that was given when the file was encrypted: \n")
+    #bytes.fromhex problematic
+    key = bytes.fromhex(key_input)
     with open('nonce.txt', "rb") as f:
         nonce_file = f.read()
     with open(filename, "rb") as f:
@@ -36,7 +44,7 @@ def decrypt():
     try:
         cipher.verify(tag_file)
         print("The message is authentic.")
-        with open(filename + "decrypted", "wb") as f:
+        with open(filename[3:], "wb") as f:
             f.write(plaindata)
     except ValueError:
         print("Key incorrect or message corrupted")
