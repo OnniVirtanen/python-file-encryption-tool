@@ -1,6 +1,5 @@
 import os
 from Crypto.Cipher import AES
-import time
 
 # Encrypt file
 def encrypt():
