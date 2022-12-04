@@ -1,3 +1,5 @@
+# Program made by Onni Virtanen 05/12/2022.
+
 import os
 from Crypto.Cipher import AES
 
@@ -24,7 +26,7 @@ def encrypt():
     save_important_values_to_file = input(
         "Write these values to a file in your current directory? Y/N\n")
     if save_important_values_to_file == "Y" or save_important_values_to_file == "y":
-        with open('important_values.txt', "w") as f:
+        with open(f'important_values_{filename}.txt', "w") as f:
             f.write("key: " + key.hex() + "\n")
             f.write("nonce: " + nonce.hex() + "\n")
             f.write("tag: " + tag.hex() + "\n")
@@ -46,7 +48,7 @@ def decrypt():
     nonce_input = input("Type the nonce: \n")
     nonce = bytes.fromhex(nonce_input)
 
-    verify_authenticity = input("Verify file's authenticity Y/N")
+    verify_authenticity = input("Verify file's authenticity Y/N\n")
     if verify_authenticity == "Y" or verify_authenticity == "y":
         tag_input = input(
             "Type the tag that was given when the file was encrypted: \n")
