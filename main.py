@@ -87,6 +87,6 @@ if proceed == "Y" or proceed == "y":
     else:
         print("error")
 elif proceed == "N" or proceed == "n":
-    print("Closing program.\nDone")
+    print("Closing program.")
 else:
     print("Wrong input.\nClosing program.")
