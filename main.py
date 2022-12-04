@@ -1,29 +1,28 @@
 import os
 from Crypto.Cipher import AES
 
-# key = b'16 bytes'
-
 # Encrypt
 def encrypt():
-    print("This key will be needed in decryption. If the key is lost the data is lost.")
     key = os.urandom(16)
     #key.hex problematic !!!!
-    print(key.hex())
     filename = input("Type a filename you want to encrypt: \n")
     with open(filename, "rb") as tieto:
         data = tieto.read()
     cipher = AES.new(key, AES.MODE_EAX)
     nonce = cipher.nonce
     ciphertext, tag = cipher.encrypt_and_digest(data)
-    print("Encryption completed.")
+    print("The key and tag are needed for decryption. If lost, the data cannot be retrieved.")
+    print("Save this key: ", key.hex())
+    print("Save the tag to verify the file authenticity: ", tag.hex())
 
     # Writing ciphertext, nonce and tag to a file.
     with open('nonce.txt', "wb") as f:
         f.write(nonce)
-    with open('enc' + filename, "wb") as f:
+    with open('enc_' + filename, "wb") as f:
         f.write(ciphertext)
     with open('tag.txt', "wb") as f:
         f.write(tag)
+    print("The file was successfully encrypted.")
 
 # Decrypt
 def decrypt():
@@ -35,17 +34,18 @@ def decrypt():
         nonce_file = f.read()
     with open(filename, "rb") as f:
         ciphertext_file = f.read()
-    with open('tag.txt', "rb") as f:
-        tag_file = f.read()
-    print("nonce, cipher and tag files are read from the files.")
+
+    tag_input = input("Type the tag that was given when the file was encrypted: \n")
+    tag_file = bytes.fromhex(tag_input)
 
     cipher = AES.new(key, AES.MODE_EAX, nonce=nonce_file)
     plaindata = cipher.decrypt(ciphertext_file)
     try:
         cipher.verify(tag_file)
-        print("The message is authentic.")
-        with open(filename[3:], "wb") as f:
+        print("The file is authentic.")
+        with open("dec_" + filename[4:], "wb") as f:
             f.write(plaindata)
+        print("The file was successfully decrypted.")
     except ValueError:
         print("Key incorrect or message corrupted")
 
