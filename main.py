@@ -1,25 +1,22 @@
 import os
 from Crypto.Cipher import AES
-import colorama
-from colorama import Fore
+import time
 
-
-# Encrypt
+# Encrypt file
 def encrypt():
     key = os.urandom(16)
-    #key.hex problematic !!!!
     filename = input("Type a filename you want to encrypt: \n")
+
+    print(f'Encrypting file "{filename}"...')
     with open(filename, "rb") as tieto:
         data = tieto.read()
     cipher = AES.new(key, AES.MODE_EAX)
     nonce = cipher.nonce
     ciphertext, tag = cipher.encrypt_and_digest(data)
-    print("\n" + Fore.BLUE + "------------------------------------------------------------" + Fore.WHITE)
-    print("\nThe key is needed for decryption.", Fore.LIGHTRED_EX + "If lost, the data cannot be retrieved!" + Fore.WHITE)
+    print("The key is needed for decryption. If lost, the data cannot be retrieved!")
     print("The tag is needed to check the file authenticity.\n")
-    print("Save this key: ", Fore.BLUE + key.hex() + "\n")
-    print(Fore.WHITE + "Save this tag: ", Fore.CYAN + tag.hex() + Fore.WHITE + "\n")
-    print(Fore.BLUE + "------------------------------------------------------------" + Fore.WHITE + "\n") 
+    print("Save this key:", key.hex() + "\n")
+    print("Save this tag:", tag.hex() + "\n")
 
     # Writing ciphertext, nonce and tag to a file.
     with open('nonce.txt', "wb") as f:
@@ -28,10 +25,9 @@ def encrypt():
         f.write(ciphertext)
     with open('tag.txt', "wb") as f:
         f.write(tag)
-    print(Fore.LIGHTGREEN_EX + "The file was successfully encrypted." + Fore.WHITE + "\n")
-    print("Closing program...\nDone.\n")
+    print("The file was successfully encrypted.")
 
-# Decrypt
+# Decrypt file
 def decrypt():
     filename = input("Type a filename you want to decrypt: \n")
     key_input = input("Type the key that was given when the file was encrypted: \n")
@@ -57,13 +53,11 @@ def decrypt():
         print("Key incorrect or message corrupted")
 
 # User input
-print(Fore.BLUE + "------------------------------------------------------------")
-print("Welcome to", Fore.GREEN + "ViCrypt!\n")
-print(Fore.BLUE + "This program is used for file encryption and decryption.\n")
+print("Welcome to ViCrypt!")
+print("This program is used for file encryption and decryption.")
 print("The program uses AES 256 algorithm to encrypt files.")
-print("------------------------------------------------------------")
 
-proceed = str(input(Fore.WHITE + "Proceed: Y/N "))
+proceed = str(input("Proceed: Y/N\n"))
 
 if proceed == "Y" or proceed == "y":
     user_choice_enc_or_dec = input("Type in E or D, E=Encrypt, D=Decrypt.\n")
