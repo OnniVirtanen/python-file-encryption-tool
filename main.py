@@ -5,7 +5,7 @@ import time
 # Encrypt file
 def encrypt():
     key = os.urandom(16)
-    filename = input("Type a filename you want to encrypt: \n")
+    filename = input("Enter the filename you want to encrypt: \n")
 
     print(f'Encrypting file "{filename}"...')
     with open(filename, "rb") as tieto:
@@ -13,39 +13,42 @@ def encrypt():
     cipher = AES.new(key, AES.MODE_EAX)
     nonce = cipher.nonce
     ciphertext, tag = cipher.encrypt_and_digest(data)
-    print("The key is needed for decryption. If lost, the data cannot be retrieved!")
-    print("The tag is needed to check the file authenticity.\n")
-    print("Save this key:", key.hex() + "\n")
-    print("Save this tag:", tag.hex() + "\n")
+    print("The key and nonce are required for decryption. If they are lost, the data will be irrecoverable.")
+    print("The tag is used to verify the authenticity of the file.")
+    print("Please make sure to save these values:\n")
+    print("key:", key.hex())
+    print("nonce:", nonce.hex())
+    print("tag:", tag.hex() + "\n")
 
-    # Writing ciphertext, nonce and tag to a file.
-    with open('nonce.txt', "wb") as f:
-        f.write(nonce)
+    # Writing ciphertext to file.
     with open('enc_' + filename, "wb") as f:
         f.write(ciphertext)
-    with open('tag.txt', "wb") as f:
-        f.write(tag)
     print("The file was successfully encrypted.")
 
 # Decrypt file
 def decrypt():
     filename = input("Type a filename you want to decrypt: \n")
     key_input = input("Type the key that was given when the file was encrypted: \n")
-    #bytes.fromhex problematic
     key = bytes.fromhex(key_input)
-    with open('nonce.txt', "rb") as f:
-        nonce_file = f.read()
     with open(filename, "rb") as f:
         ciphertext_file = f.read()
+    nonce_input = input("Type the nonce: \n")
+    nonce = bytes.fromhex(nonce_input)
 
-    tag_input = input("Type the tag that was given when the file was encrypted: \n")
-    tag_file = bytes.fromhex(tag_input)
+    verify_authenticity = input("Verify file's authenticity Y/N")
+    if verify_authenticity == "Y" or verify_authenticity == "y":
+        tag_input = input("Type the tag that was given when the file was encrypted: \n")
+        tag_file = bytes.fromhex(tag_input)
 
-    cipher = AES.new(key, AES.MODE_EAX, nonce=nonce_file)
+    cipher = AES.new(key, AES.MODE_EAX, nonce=nonce)
     plaindata = cipher.decrypt(ciphertext_file)
     try:
-        cipher.verify(tag_file)
-        print("The file is authentic.")
+        try:
+            cipher.verify(tag_file)
+            print("The file is authentic.")
+        except:
+            print("The file's authenticity cannot be verified.")
+
         with open("dec_" + filename[4:], "wb") as f:
             f.write(plaindata)
         print("The file was successfully decrypted.")
