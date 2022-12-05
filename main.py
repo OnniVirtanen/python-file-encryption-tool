@@ -34,6 +34,12 @@ def encrypt():
     # Writing ciphertext to file.
     with open('enc_' + filename, "wb") as f:
         f.write(ciphertext)
+    # Writing nonce to the file.
+    with open('enc_' + filename, "a") as f:
+        f.write(nonce.hex())
+    # Writing tag to the file.
+    with open('enc_' + filename, "a") as f:
+        f.write(tag.hex())
     print("The file was successfully encrypted.")
 
 
@@ -45,14 +51,31 @@ def decrypt():
     key = bytes.fromhex(key_input)
     with open(filename, "rb") as f:
         ciphertext_file = f.read()
-    nonce_input = input("Type the nonce: \n")
-    nonce = bytes.fromhex(nonce_input)
+
+    # Finding nonce and tag located in the file.
+    with open(filename, "r") as f:
+        # NONCE
+        f.seek(0, 2)
+        position = f.tell()
+        f.seek(position - 64, 0)
+        bytes64_32 = f.read(32)
+        print("nonce:", bytes64_32)
+        nonce_in_end_of_file = bytes64_32
+
+        # TAG
+        bytes32_16 = f.read()
+        f.seek(position - 32, 0)
+        bytes32_16 = f.read()
+        print("tag:", bytes32_16)
+        tag_in_end_of_file = bytes32_16
+
+        nonce = bytes.fromhex(nonce_in_end_of_file)
+
 
     verify_authenticity = input("Verify file's authenticity Y/N\n")
     if verify_authenticity == "Y" or verify_authenticity == "y":
-        tag_input = input(
-            "Type the tag that was given when the file was encrypted: \n")
-        tag_file = bytes.fromhex(tag_input)
+        # Reading tag from the encrypted file.
+        tag_file = bytes.fromhex(tag_in_end_of_file)
 
     cipher = AES.new(key, AES.MODE_EAX, nonce=nonce)
     plaindata = cipher.decrypt(ciphertext_file)
@@ -68,7 +91,6 @@ def decrypt():
         print("The file was successfully decrypted.")
     except ValueError:
         print("Key incorrect or message corrupted")
-
 
 # User input
 print("Welcome to ViCrypt!")
