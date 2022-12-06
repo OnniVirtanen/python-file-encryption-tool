@@ -70,6 +70,7 @@ def decrypt():
     # Asking the user for key input.
     key_input = input("Type the key for decryption: \n")
     key = bytes.fromhex(key_input)
+    print(f'Decrypting file "{filename}"...')
 
     # Reading bytes of the encrypted file and assigning it to a variable.
     with open(filename, "rb") as f:
