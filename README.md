@@ -35,7 +35,7 @@ $ D
 $ enc_hello.txt
 
 4. Input key: (use your own key).\
-$ 0af1f1d481535874034b18e625f739b3
+$ b779eaa0d589ff1572f51560e0365180
 
 5. File named "dec_hello.txt" is in your current directory.\
 
