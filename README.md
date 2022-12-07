@@ -1,7 +1,7 @@
 The program can be used for file encryption and file decryption. The program is used in command line interface.
 
-You will need to install Crypto.Cipher library.
-https://pycryptodome.readthedocs.io/en/latest/src/cipher/cipher.html
+The program uses Crypto.Cipher library.
+pip install pycryptodome
 
 ////
 to encrypt a file "hello.txt" in your current directory:
