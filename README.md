@@ -1,4 +1,4 @@
-© Virtanen Onni
+© Virtanen Onni\
 VionCrypt\
 The program is capable of both file encryption and file decryption and is accessed through a command line interface.
 
