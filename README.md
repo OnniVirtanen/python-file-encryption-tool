@@ -20,7 +20,7 @@ $ Y
 
 5. File named "enc_hello.txt" is in your current directory.
 
-![image](https://user-images.githubusercontent.com/116679314/206282786-0878fbe7-eabb-4d89-b334-7b2c4bc425f2.png)
+![image](https://user-images.githubusercontent.com/116679314/206299596-15777dbd-b790-41ab-805e-fac5ac1ff2e0.png)
 
 ////
 
@@ -39,6 +39,6 @@ $ 0af1f1d481535874034b18e625f739b3
 
 5. File named "dec_hello.txt" is in your current directory.
 
-![image](https://user-images.githubusercontent.com/116679314/206282985-67309c02-cd49-4dad-b586-eaa88e55ea65.png)
+![image](https://user-images.githubusercontent.com/116679314/206299916-0f1e2393-5d5a-4a8b-9180-a7c399750f57.png)
 
 
