@@ -99,7 +99,7 @@ def decrypt():
         print("Error when writing decrypted data to a file.")
 
 # Introduction to the program.
-print("Welcome to ViCrypt!")
+print("Welcome to VionCrypt!")
 print("This program is used for file encryption and decryption.")
 print("The program uses AES256 algorithm.")
 
