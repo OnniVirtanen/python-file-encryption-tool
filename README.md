@@ -14,7 +14,7 @@ $ E
 3. choose the file name\
 $ hello.txt
 
-4. Do you want the key to be printed only or also saved to a txt file in your current directory.\
+4. Do you want the key saved to a txt file in your current directory.\
 $ Y
 
 5. File named "enc_hello.txt" is in your current directory.\
