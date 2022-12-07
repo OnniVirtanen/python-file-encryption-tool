@@ -36,5 +36,7 @@ $ 0af1f1d481535874034b18e625f739b3
 
 5. File named "dec_hello.txt" is in your current directory.
 
+![image](https://user-images.githubusercontent.com/116679314/206282786-0878fbe7-eabb-4d89-b334-7b2c4bc425f2.png)
+![image](https://user-images.githubusercontent.com/116679314/206282985-67309c02-cd49-4dad-b586-eaa88e55ea65.png)
 
-![Näyttökuva 2022-12-07 215534](https://user-images.githubusercontent.com/116679314/206282491-50cde5c2-e661-46e3-9378-1d01a2e6a719.png)
+
