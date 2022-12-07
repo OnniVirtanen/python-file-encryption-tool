@@ -21,7 +21,7 @@ $ Y
 
 ![image](https://user-images.githubusercontent.com/116679314/206299596-15777dbd-b790-41ab-805e-fac5ac1ff2e0.png)
 
-////
+--------------------------
 
 ##to decrypt a file "enc_hello.txt" in your current directory.
 1. run the program
