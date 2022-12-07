@@ -3,10 +3,10 @@ The program can be used for file encryption and file decryption. The program is 
 ////
 to encrypt a file "hello.txt" in your current directory:
 1. run the program.
-#$ python3 main.py
+\n$ python3 main.py
 
 2. the program asks whether to encrypt or decrypt.
-#$ E
+\n$ E
 
 3. choose the file name
 #$ hello.txt
