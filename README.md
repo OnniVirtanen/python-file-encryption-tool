@@ -1,11 +1,10 @@
-The program is capable of both file encryption and file decryption and is accessed through a command line interface.
+#VionCrypt
+##The program is capable of both file encryption and file decryption and is accessed through a command line interface.
 
-Keep in mind before running the program!
-The program uses Crypto.Cipher library.
-pip install pycryptodome
+######The program uses Crypto.Cipher library.
+######pip install pycryptodome
 
-////
-To encrypt the file "hello.txt" in your current directory, use the following commands:
+##To encrypt the file "hello.txt" in your current directory, use the following commands:
 1. run the program.
 $ python3 main.py
 
@@ -24,7 +23,7 @@ $ Y
 
 ////
 
-to decrypt a file "enc_hello.txt" in your current directory.
+##to decrypt a file "enc_hello.txt" in your current directory.
 1. run the program
 $ python3 main.py
 
