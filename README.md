@@ -7,7 +7,7 @@ pip install pycryptodome
 to encrypt a file "hello.txt" in your current directory:
 1. run the program.
 \n$ python3 main.py
-![image](https://user-images.githubusercontent.com/116679314/206281976-ac26be91-f214-456d-a447-45d9445680e6.png)
+\n![image](https://user-images.githubusercontent.com/116679314/206281976-ac26be91-f214-456d-a447-45d9445680e6.png)
 
 
 2. the program asks whether to encrypt or decrypt.
