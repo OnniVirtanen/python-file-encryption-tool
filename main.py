@@ -28,7 +28,7 @@ def encrypt():
         "Write the key to a file in your current directory? Y/N\n")
     if save_key == "Y" or save_key== "y":
         with open(f'key_{filename}.txt', "w") as f:
-            f.write("key: " + key.hex())
+            f.write("key: " + key.hex() + "\n")
 
     # Creating a file that contains the encrypted data.
     with open('enc_' + filename, "wb") as f:
