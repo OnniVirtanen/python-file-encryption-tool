@@ -8,7 +8,7 @@ def encrypt():
     # Ask user to enter the filename to encrypt.
     key = os.urandom(16)
 
- while True:
+    while True:
         # Asking the user for key input.
         filename = input("Enter the filename you want to encrypt: \n")
         try:
@@ -144,4 +144,4 @@ if user_choice == "E" or user_choice == "e":
 elif user_choice == "D" or user_choice == "d":
     decrypt()
 else:
-    print("Error in user input when providing choice on whether to encrypt or decrypt.")
+    print("Error in user input when providing choice on whether to encrypt or decrypt.")  
