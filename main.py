@@ -8,7 +8,7 @@ def encrypt():
     # Ask user to enter the filename to encrypt.
     key = os.urandom(16)
 
-    while True:
+ while True:
         # Asking the user for key input.
         filename = input("Enter the filename you want to encrypt: \n")
         try:
@@ -18,11 +18,15 @@ def encrypt():
 
             with open(filename, "rb") as f:
                 data = f.read()
-            cipher = AES.new(key, AES.MODE_EAX)
-            nonce = cipher.nonce
-            ciphertext, tag = cipher.encrypt_and_digest(data)
+            try:
+                cipher = AES.new(key, AES.MODE_EAX)
+                nonce = cipher.nonce
+                ciphertext, tag = cipher.encrypt_and_digest(data)
+            except:
+                print("Key is not in hexadecimal format.")
+                continue
         except:
-            print("Key is not in hexadecimal format.")
+            print("Wrong file name.")
             continue
         else:
             print(f'Encrypting file "{filename}"...')
