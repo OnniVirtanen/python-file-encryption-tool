@@ -1,7 +1,7 @@
 The program is capable of both file encryption and file decryption and is accessed through a command line interface.\
 This has the support for every filetype since the bits of the file are encrypted. For example you could encrypt a video, text or an image file.
 
-The program uses Crypto.Cipher library.\
+The program uses Crypto.Cipher library. \
 
 Pycryptodome is needed in order to run the program. Do the following command in terminal.\
 pip install pycryptodome
