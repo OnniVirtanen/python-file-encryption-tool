@@ -5,11 +5,10 @@ from Crypto.Cipher import AES
 # Encrypt file
 def encrypt():
     # Create a random secure key.
-    # Ask user to enter the filename to encrypt.
     key = os.urandom(16)
 
     while True:
-        # Asking the user for key input.
+         # Ask user to enter the filename to encrypt.
         filename = input("Enter the filename you want to encrypt: \n")
         try:
             # Read bytes of the file.
@@ -38,25 +37,36 @@ def encrypt():
 
     # Asking user if the key should be saved in the current directory.
     # If true, creating a file containing the key.
-    
-  
-    save_key = input("Write the key to a file in your current directory? Y/N\n")
+    save_key = str(input("Write the key to a file in your current directory? Y/N\n").lower())
 
-    if save_key == "Y" or save_key == "y":
-        with open(f'secret_key.txt', "w") as f:
-            f.write("key: " + key.hex() + "\n")
+    if save_key == "y":
+        try:
+            with open(f'secret_key.txt', "w") as f:
+                f.write("key: " + key.hex() + "\n")
+        except IOError as e:
+            if e.errno == 28:
+                print('Error: No space left on device')
+            else:
+                print('Error:', e)
 
-    # Creating a file that contains the encrypted data.
-    with open('enc_' + filename, "wb") as f:
-        f.write(ciphertext)
-    # Writing nonce to end of the file.
-    with open('enc_' + filename, "a") as f:
-        f.write(nonce.hex())
-    # Writing tag to end of the file.
-    with open('enc_' + filename, "a") as f:
-        f.write(tag.hex())
+    try:
+        # Creating a file that contains the encrypted data.
+        with open('enc_' + filename, "wb") as f:
+            f.write(ciphertext)
+        # Writing nonce to end of the file.
+        with open('enc_' + filename, "a") as f:
+            f.write(nonce.hex())
+        # Writing tag to end of the file.
+        with open('enc_' + filename, "a") as f:
+            f.write(tag.hex())
 
-    print("The file was successfully encrypted.")
+        print("The file was successfully encrypted.")
+
+    except IOError as e:
+        if e.errno == 28:
+            print('Error: No space left on device')
+        else:
+            print('Error:', e)
 
 
 # Decrypt file
@@ -67,26 +77,29 @@ def decrypt():
     shutil.copy(filename, "copy" + filename)
     filename = "copy" + filename
 
-    # Reading nonce and tag from the file that is to be decrypted.
-    # Assigning variables to nonce and tag.
-    with open(filename, "r") as f:
-        # Nonce
-        f.seek(0, 2)
-        position = f.tell()
-        f.seek(position - 64, 0)
-        nonce = f.read(32)
-        nonce = bytes.fromhex(nonce)
+    try:
+        # Reading nonce and tag from the file that is to be decrypted.
+        # Assigning variables to nonce and tag.
+        with open(filename, "r") as f:
+            # Nonce
+            f.seek(0, 2)
+            position = f.tell()
+            f.seek(position - 64, 0)
+            nonce = f.read(32)
+            nonce = bytes.fromhex(nonce)
 
-        # Tag
-        tag = f.read()
-        f.seek(position - 32, 0)
-        tag = f.read()
-        tag = bytes.fromhex(tag)
+            # Tag
+            tag = f.read()
+            f.seek(position - 32, 0)
+            tag = f.read()
+            tag = bytes.fromhex(tag)
 
-    # Remove nonce and tag from end of the file that is to be decrypted.
-    with open(filename, 'r+b') as f:
-        f.seek(-64, 2)
-        f.truncate()
+        # Remove nonce and tag from end of the file that is to be decrypted.
+        with open(filename, 'r+b') as f:
+            f.seek(-64, 2)
+            f.truncate()
+    except IOError as e:
+        print('Error:', e)
 
     # Ask the user for key if the key is not in hex format.
     while True:
@@ -102,8 +115,11 @@ def decrypt():
             break
 
     # Reading bytes of the encrypted file and assigning it to a variable.
-    with open(filename, "rb") as f:
-        ciphertext_file = f.read()
+    try:
+        with open(filename, "rb") as f:
+            ciphertext_file = f.read()
+    except IOError as e:
+        print('Error:', e)
 
     # Decrypting the encrypted file using the key provided by user.
     try:
@@ -137,11 +153,16 @@ print("This program is used for file encryption and decryption.")
 print("The program uses AES256 algorithm.")
 
 # Asking the user how the program will be used. It can be used for encryption or decryption.
-user_choice = input("Type in E or D, E=Encrypt, D=Decrypt.\n")
 
-if user_choice == "E" or user_choice == "e":
-    encrypt()
-elif user_choice == "D" or user_choice == "d":
-    decrypt()
-else:
-    print("Error in user input when providing choice on whether to encrypt or decrypt.")  
+while True:
+    user_choice = str(input("Type in E or D, E=Encrypt, D=Decrypt.\n").lower())
+
+    if user_choice == "e":
+        encrypt()
+        break
+    elif user_choice == "d":
+        decrypt()
+        break
+    else:
+        print("Please type in E or D.")  
+        continue
